@@ -19,8 +19,8 @@ lastStart2 = 0
 lastStart3 = 0
 lastStart4 = 0
 lastStart5 = 0
-warning_threshold = 1
-revert_idle_threshold = 2
+warning_threshold = 25
+revert_idle_threshold = 30
 
 def counter_label1(label1): 
 	def count1(): 
