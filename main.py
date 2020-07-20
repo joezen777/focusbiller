@@ -75,7 +75,7 @@ def counter_label2(label2, label1):
 			if counter2==0:			 
 				display2="Starting..."
 			else: 
-				string = f'{hours:02}:{minutes:02}:{seconds:02}' 
+				string = "{hours:02}:{minutes:02}:{seconds:02}".format(hours=hours, minutes=minutes, seconds=seconds) 
 				display2=string 
 	
 			label2['text']=display2 # Or label.config(text=display) 
@@ -124,7 +124,7 @@ def counter_label3(label3, label1):
 			if counter3==0:			 
 				display3="Starting..."
 			else: 
-				string = f'{hours:02}:{minutes:02}:{seconds:02}' 
+				string = "{hours:02}:{minutes:02}:{seconds:02}".format(hours=hours, minutes=minutes, seconds=seconds)
 				display3=string 
 	
 			label3['text']=display3 # Or label.config(text=display) 
@@ -222,7 +222,7 @@ def counter_label5(label5, label1):
 			if counter5==0:			 
 				display5="Starting..."
 			else: 
-				string = f'{hours:02}:{minutes:02}:{seconds:02}' 
+				string = "{hours:02}:{minutes:02}:{seconds:02}".format(hours=hours, minutes=minutes, seconds=seconds)
 				display5=string 
 	
 			label5['text']=display5 # Or label.config(text=display) 
@@ -324,7 +324,7 @@ def Reset():
 
 def Exit(root):
 	global counter1, counter2, counter3, counter4, counter5 
-	print(f'{counter1:n}-{counter2:n}-{counter3:n}-{counter4:n}-{counter5:n}')
+	print("{counter1:n}-{counter2:n}-{counter3:n}-{counter4:n}-{counter5:n}".format(counter1=counter1,counter2=counter2,counter3=counter3,counter4=counter4,counter5=counter5))
 	root.destroy()
 	
 root = Tk() 
