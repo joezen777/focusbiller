@@ -40,7 +40,7 @@ def counter_label1(label1):
 			if counter1==0:			 
 				display1="Starting..."
 			else: 
-				string = f'{hours:02}:{minutes:02}:{seconds:02}' 
+				string = "{hours:02}:{minutes:02}:{seconds:02}".format(hours=hours, minutes=minutes, seconds=seconds) 
 				display1=string 
 	
 			label1['text']=display1 # Or label.config(text=display) 
