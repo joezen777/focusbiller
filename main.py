@@ -4,6 +4,7 @@
 import math
 from tkinter import *
 from datetime import datetime 
+import simpleaudio as sa
 counter1 = 0
 counter2 = 0
 counter3 = 0
@@ -20,7 +21,10 @@ lastStart3 = 0
 lastStart4 = 0
 lastStart5 = 0
 warning_threshold = 25
+last_minute_threshold = 29
+last_ten_seconds_threshold = 29.8333
 revert_idle_threshold = 30
+
 
 def counter_label1(label1): 
 	def count1(): 
@@ -31,9 +35,10 @@ def counter_label1(label1):
 			global running3
 			global running4 
 			global running5 
+			label1.config(bg="white")
 			running2=running3=running4=running5=False
 			seconds = counter1 % 60
-			minutes = math.floor(counter1 / 60)
+			minutes = math.floor((counter1 % 3600) / 60)
 			hours = math.floor(counter1 / 3600) 
 	
 			# To manage the intial delay. 
@@ -53,6 +58,8 @@ def counter_label1(label1):
 			# Delays by 1000ms=1 seconds and call count again. 
 			label1.after(1000, count1) 
 			counter1 += 1
+		else:
+			label1.config(fg="lime",bg="black")
 	
 	# Triggering the start of the counter. 
 	count1()	 
@@ -66,9 +73,10 @@ def counter_label2(label2, label1):
 			global running3
 			global running4 
 			global running5 
+			label2.config(bg="red4")
 			running1=running3=running4=running5=False
 			seconds = counter2 % 60
-			minutes = math.floor(counter2 / 60)
+			minutes = math.floor((counter2 % 3600) / 60)
 			hours = math.floor(counter2 / 3600) 
 	
 			# To manage the intial delay. 
@@ -89,20 +97,31 @@ def counter_label2(label2, label1):
 			
 
 			counter2 += 1
-			if lastStart2 + 60*revert_idle_threshold <= counter2:
+			lastStart = lastStart2
+			counter = counter2 
+			label = label2
+			if lastStart + 60*revert_idle_threshold <= counter:
 				running2=False
 				Start1(label1)
-				label2.config(fg="lime",bg="black")
-			elif lastStart2 + 60*warning_threshold <= counter2:
-				if counter2 % 2 == 1:
-					label2.config(fg="cyan",bg="red")
+				PlayFailure()
+				label.config(fg="lime",bg="black")
+			elif lastStart + 60*warning_threshold <= counter:
+				if counter % 2 == 1:
+					if lastStart + 60*last_minute_threshold <= counter:
+						PlayKlaxon()
+					else:
+						PlayBlip()
+					label.config(fg="cyan",bg="red")
 				else:
-					label2.config(fg="lime",bg="black")
+					if lastStart + 60*last_ten_seconds_threshold <= counter:
+						PlayKlaxon()
+					label.config(fg="lime",bg="red4")
 			else:
-				label2.config(fg="lime",bg="black")
+				label.config(fg="lime",bg="red4")
 
-			label2.after(1000, count2) 
-	
+			label.after(1000, count2) 
+		else:
+			label2.config(fg="lime",bg="black")
 	# Triggering the start of the counter. 
 	count2()	 
 
@@ -115,9 +134,10 @@ def counter_label3(label3, label1):
 			global running2
 			global running4 
 			global running5 
+			label3.config(bg="gold4")
 			running1=running2=running4=running5=False
 			seconds = counter3 % 60
-			minutes = math.floor(counter3 / 60)
+			minutes = math.floor((counter3 % 3600) / 60)
 			hours = math.floor(counter3 / 3600) 
 	
 			# To manage the intial delay. 
@@ -138,19 +158,31 @@ def counter_label3(label3, label1):
 			
 
 			counter3 += 1
-			if lastStart3 + 60*revert_idle_threshold <= counter3:
+			lastStart = lastStart3
+			counter = counter3 
+			label = label3
+			if lastStart + 60*revert_idle_threshold <= counter:
 				running3=False
 				Start1(label1)
-				label3.config(fg="lime",bg="black")
-			elif lastStart3 + 60*warning_threshold <= counter3:
-				if counter3 % 2 == 1:
-					label3.config(fg="cyan",bg="red")
+				PlayFailure()
+				label.config(fg="lime",bg="black")
+			elif lastStart + 60*warning_threshold <= counter:
+				if counter % 2 == 1:
+					if lastStart + 60*last_minute_threshold <= counter:
+						PlayKlaxon()
+					else:
+						PlayBlip()
+					label.config(fg="cyan",bg="red")
 				else:
-					label3.config(fg="lime",bg="black")
+					if lastStart + 60*last_ten_seconds_threshold <= counter:
+						PlayKlaxon()
+					label.config(fg="lime",bg="gold4")
 			else:
-				label3.config(fg="lime",bg="black")
+				label.config(fg="lime",bg="gold4")
 
-			label3.after(1000, count3) 
+			label.after(1000, count3) 
+		else:
+			label3.config(fg="lime",bg="black")
 	
 	# Triggering the start of the counter. 
 	count3()	 
@@ -164,9 +196,10 @@ def counter_label4(label4, label1):
 			global running3
 			global running2 
 			global running5 
+			label4.config(bg="dark green")
 			running1=running3=running2=running5=False
 			seconds = counter4 % 60
-			minutes = math.floor(counter4 / 60)
+			minutes = math.floor((counter4 % 3600) / 60)
 			hours = math.floor(counter4 / 3600) 
 	
 			# To manage the intial delay. 
@@ -187,19 +220,31 @@ def counter_label4(label4, label1):
 			
 			
 			counter4 += 1
-			if lastStart4 + 60*revert_idle_threshold <= counter4:
+			lastStart = lastStart4
+			counter = counter4
+			label = label4
+			if lastStart + 60*revert_idle_threshold <= counter:
 				running4=False
 				Start1(label1)
-				label4.config(fg="lime",bg="black")
-			elif lastStart4 + 60*warning_threshold <= counter4:
-				if counter4 % 2 == 1:
-					label4.config(fg="cyan",bg="red")
+				PlayFailure()
+				label.config(fg="lime",bg="black")
+			elif lastStart + 60*warning_threshold <= counter:
+				if counter % 2 == 1:
+					if lastStart + 60*last_minute_threshold <= counter:
+						PlayKlaxon()
+					else:
+						PlayBlip()
+					label.config(fg="cyan",bg="red")
 				else:
-					label4.config(fg="lime",bg="black")
+					if lastStart + 60*last_ten_seconds_threshold <= counter:
+						PlayKlaxon()
+					label.config(fg="lime",bg="dark green")
 			else:
-				label4.config(fg="lime",bg="black")
+				label.config(fg="lime",bg="dark green")
 
-			label4.after(1000, count4) 
+			label.after(1000, count4) 
+		else:
+			label4.config(fg="lime",bg="black")
 	
 	# Triggering the start of the counter. 
 	count4()	 
@@ -213,9 +258,10 @@ def counter_label5(label5, label1):
 			global running3
 			global running4 
 			global running2 
+			label5.config(bg="blue4")
 			running1=running3=running4=running2=False
 			seconds = counter5 % 60
-			minutes = math.floor(counter5 / 60)
+			minutes = math.floor((counter5 % 3600) / 60)
 			hours = math.floor(counter5 / 3600) 
 	
 			# To manage the intial delay. 
@@ -236,19 +282,31 @@ def counter_label5(label5, label1):
 			
 			
 			counter5 += 1
-			if lastStart5 + 60*revert_idle_threshold <= counter5:
+			lastStart = lastStart5
+			counter = counter5
+			label = label5
+			if lastStart + 60*revert_idle_threshold <= counter:
 				running5=False
 				Start1(label1)
-				label5.config(fg="lime",bg="black")
-			elif lastStart5 + 60*warning_threshold <= counter5:
-				if counter5 % 2 == 1:
-					label5.config(fg="cyan",bg="red")
+				PlayFailure()
+				label.config(fg="lime",bg="black")
+			elif lastStart + 60*warning_threshold <= counter:
+				if counter % 2 == 1:
+					if lastStart + 60*last_minute_threshold <= counter:
+						PlayKlaxon()
+					else:
+						PlayBlip()
+					label.config(fg="cyan",bg="red")
 				else:
-					label5.config(fg="lime",bg="black")
+					if lastStart + 60*last_ten_seconds_threshold <= counter:
+						PlayKlaxon()
+					label.config(fg="lime",bg="blue4")
 			else:
-				label5.config(fg="lime",bg="black")
+				label.config(fg="lime",bg="blue4")
 
-			label5.after(1000, count5) 
+			label.after(1000, count5) 
+		else:
+			label5.config(fg="lime",bg="black")
 	
 	# Triggering the start of the counter. 
 	count5()	 
@@ -259,15 +317,16 @@ def Start1(label1):
 	global running1, lastStart1 
 	running1=running1==False
 	lastStart1=counter1
-	if running1:
-		counter_label1(label1)
+	counter_label1(label1)
 
 def Start2(label2, label1): 
 	global running2, lastStart2 
 	lastStart2=counter2
 	if not running2:
 		running2 = True
-		counter_label2(label2, label1) 
+		counter_label2(label2, label1)
+	else:
+		PlayReset() 
 
 def Start3(label3, label1): 
 	global running3, lastStart3 
@@ -275,6 +334,8 @@ def Start3(label3, label1):
 	if not running3:
 		running3 = True
 		counter_label3(label3, label1)
+	else:
+		PlayReset()
 
 def Start4(label4, label1): 
 	global running4, lastStart4
@@ -282,6 +343,8 @@ def Start4(label4, label1):
 	if not running4:
 		running4 = True
 		counter_label4(label4, label1) 
+	else:
+		PlayReset()
 
 def Start5(label5, label1): 
 	global running5, lastStart5 
@@ -290,6 +353,26 @@ def Start5(label5, label1):
 	if not running5:
 		running5 = True
 		counter_label5(label5, label1) 
+	else:
+		PlayReset()
+
+def TotalTime(label6):
+	def showtime():
+		global counter1, counter2, counter3, counter4, counter5
+		counter6 = counter1 + counter2 + counter3 + counter4 + counter5
+		seconds = counter6 % 60
+		minutes = math.floor((counter6 % 3600) / 60)
+		hours = math.floor(counter6 / 3600)
+		now = datetime.now()
+		tstamp = now.strftime("%Y-%m-%d %H:%M:%S")
+		string = "{hours:02}:{minutes:02}:{seconds:02}".format(hours=hours, minutes=minutes, seconds=seconds)
+		display6=string 
+		if counter6 % 300 == 0:
+			print("{tstamp}	{display6}	{counter1}	{counter2}	{counter3}	{counter4}	{counter5}".format(tstamp=tstamp, display6=display6, counter1=counter1, counter2=counter2, counter3=counter3, counter4=counter4, counter5=counter5))
+		
+		label6['text']=display6 
+		label6.after(1000,showtime)
+	showtime()
 	
 # Stop function of the stopwatch 
 def Stop(): 
@@ -322,8 +405,28 @@ def Reset():
 	counter4=lastStart4=0
 	counter5=lastStart5=0
 
+def PlayBlip():
+	PlaySound("HatchBlip32.wav")
+
+def PlayKlaxon():
+	PlaySound("HatchKlaxon32.wav")
+
+def PlayReset():
+	PlaySound("HatchReset32.wav")
+
+def PlayFailure():
+	PlaySound("HatchErupt32.wav")
+
+
+def PlaySound(soundFile):
+	wave_obj = sa.WaveObject.from_wave_file(soundFile)
+	#play_obj = 
+	wave_obj.play()
+	# play_obj.wait_done()  # Wait until sound has finished playing
+
 def Exit(root):
 	global counter1, counter2, counter3, counter4, counter5 
+	
 	print("{counter1:n}-{counter2:n}-{counter3:n}-{counter4:n}-{counter5:n}".format(counter1=counter1,counter2=counter2,counter3=counter3,counter4=counter4,counter5=counter5))
 	root.destroy()
 	
@@ -366,6 +469,10 @@ label5 = Label(f, text="Task #4", fg="lime", bg="black", font="Verdana 30 bold")
 label5.grid(column=4, row=0, sticky=N+S+E+W)
 #label5.pack(side="left") 
 
+label6 = Label(f, text="Total Time", fg="black", font="Courier 12 bold")
+label6.grid(column=0, row=2, sticky=E+N+S+W)
+
+
 start1 = Button(f, text='Task Idle', width=6, command=lambda:Start1(label1)) 
 start1.grid(column=0, row=1, sticky=N+S+E+W)
 
@@ -384,6 +491,7 @@ start5.grid(column=4, row=1, sticky=N+S+E+W)
 exitbutton = Button(f, text='End', width=4, command=lambda:Exit(root))
 exitbutton.grid(column=4, row=2, sticky=E+N+S)
 
+label6.after(1000,lambda:TotalTime(label6))
 
 
 root.mainloop() 
