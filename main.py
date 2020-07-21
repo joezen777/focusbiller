@@ -20,10 +20,10 @@ lastStart2 = 0
 lastStart3 = 0
 lastStart4 = 0
 lastStart5 = 0
-warning_threshold = 25
-last_minute_threshold = 29
-last_ten_seconds_threshold = 29.8333
-revert_idle_threshold = 30
+warning_threshold = 10
+last_minute_threshold = 14
+last_ten_seconds_threshold = 14.8333
+revert_idle_threshold = 15
 
 
 def counter_label1(label1): 
@@ -43,9 +43,9 @@ def counter_label1(label1):
 	
 			# To manage the intial delay. 
 			if counter1==0:			 
-				display1="Starting..."
+				display1="00:00:00"
 			else: 
-				string = "{hours:02}:{minutes:02}:{seconds:02}".format(hours=hours, minutes=minutes, seconds=seconds) 
+				string = " {hours:02}:{minutes:02}:{seconds:02}".format(hours=hours, minutes=minutes, seconds=seconds) 
 				display1=string 
 	
 			label1['text']=display1 # Or label.config(text=display) 
@@ -81,9 +81,9 @@ def counter_label2(label2, label1):
 	
 			# To manage the intial delay. 
 			if counter2==0:			 
-				display2="Starting..."
+				display2="00:00:00"
 			else: 
-				string = "{hours:02}:{minutes:02}:{seconds:02}".format(hours=hours, minutes=minutes, seconds=seconds) 
+				string = " {hours:02}:{minutes:02}:{seconds:02}".format(hours=hours, minutes=minutes, seconds=seconds) 
 				display2=string 
 	
 			label2['text']=display2 # Or label.config(text=display) 
@@ -142,9 +142,9 @@ def counter_label3(label3, label1):
 	
 			# To manage the intial delay. 
 			if counter3==0:			 
-				display3="Starting..."
+				display3="00:00:00"
 			else: 
-				string = "{hours:02}:{minutes:02}:{seconds:02}".format(hours=hours, minutes=minutes, seconds=seconds)
+				string = " {hours:02}:{minutes:02}:{seconds:02}".format(hours=hours, minutes=minutes, seconds=seconds)
 				display3=string 
 	
 			label3['text']=display3 # Or label.config(text=display) 
@@ -204,9 +204,9 @@ def counter_label4(label4, label1):
 	
 			# To manage the intial delay. 
 			if counter4==0:			 
-				display4="Starting..."
+				display4="00:00:00"
 			else: 
-				string = "{hours:02}:{minutes:02}:{seconds:02}".format(hours=hours, minutes=minutes, seconds=seconds)
+				string = " {hours:02}:{minutes:02}:{seconds:02}".format(hours=hours, minutes=minutes, seconds=seconds)
 				display4=string 
 	
 			label4['text']=display4 # Or label.config(text=display) 
@@ -266,9 +266,9 @@ def counter_label5(label5, label1):
 	
 			# To manage the intial delay. 
 			if counter5==0:			 
-				display5="Starting..."
+				display5="00:00:00"
 			else: 
-				string = "{hours:02}:{minutes:02}:{seconds:02}".format(hours=hours, minutes=minutes, seconds=seconds)
+				string = " {hours:02}:{minutes:02}:{seconds:02}".format(hours=hours, minutes=minutes, seconds=seconds)
 				display5=string 
 	
 			label5['text']=display5 # Or label.config(text=display) 
@@ -453,19 +453,19 @@ Grid.rowconfigure(f, 1, weight=5)
 Grid.rowconfigure(f, 2, weight=1)
 
 #f.pack(anchor = 'center', pady=5)
-label1 = Label(f, text="Task Idle", fg="lime", bg="black", font="Verdana 30 bold") 
+label1 = Label(f, text="00:00:00", fg="lime", bg="black", font="Verdana 24 bold") 
 label1.grid(column=0, row=0, sticky=N+S+E+W)
 #label1.pack(side="left")
-label2 = Label(f, text="Task #1", fg="lime", bg="black", font="Verdana 30 bold") 
+label2 = Label(f, text="00:00:00", fg="lime", bg="black", font="Verdana 24 bold") 
 label2.grid(column=1, row=0, sticky=N+S+E+W)
 #label2.pack(side="left")
-label3 = Label(f, text="Task #2", fg="lime", bg="black", font="Verdana 30 bold") 
+label3 = Label(f, text="00:00:00", fg="lime", bg="black", font="Verdana 24 bold") 
 label3.grid(column=2, row=0, sticky=N+S+E+W)
 #label3.pack(side="left")
-label4 = Label(f, text="Task #3", fg="lime", bg="black", font="Verdana 30 bold") 
+label4 = Label(f, text="00:00:00", fg="lime", bg="black", font="Verdana 24 bold") 
 label4.grid(column=3, row=0, sticky=N+S+E+W)
 #label4.pack(side="left")
-label5 = Label(f, text="Task #4", fg="lime", bg="black", font="Verdana 30 bold") 
+label5 = Label(f, text="00:00:00", fg="lime", bg="black", font="Verdana 24 bold") 
 label5.grid(column=4, row=0, sticky=N+S+E+W)
 #label5.pack(side="left") 
 
@@ -473,22 +473,22 @@ label6 = Label(f, text="Total Time", fg="black", font="Courier 12 bold")
 label6.grid(column=0, row=2, sticky=E+N+S+W)
 
 
-start1 = Button(f, text='Task Idle', width=6, command=lambda:Start1(label1)) 
+start1 = Button(f, text='AFM', width=6, command=lambda:Start1(label1), font="Courier 24 bold") 
 start1.grid(column=0, row=1, sticky=N+S+E+W)
 
-stop = Button(f, text='Stop',width=6, command=Stop) 
+stop = Button(f, text='Break',width=6, command=Stop, font="Courier 24 bold") 
 stop.grid(column=2, row=2, sticky=E+N+S)
-reset = Button(f, text='Reset',width=6, command=Reset) 
+reset = Button(f, text='Sleep',width=6, command=Reset, font="Courier 24 bold") 
 reset.grid(column=3, row=2, sticky=E+N+S)
-start2 = Button(f, text='Task #1', width=6, command=lambda:Start2(label2, label1)) 
+start2 = Button(f, text='MAJ', width=6, command=lambda:Start2(label2, label1), font="Courier 24 bold") 
 start2.grid(column=1, row=1, sticky=N+S+E+W)
-start3 = Button(f, text='Task #2', width=6, command=lambda:Start3(label3, label1)) 
+start3 = Button(f, text='MOJ', width=6, command=lambda:Start3(label3, label1), font="Courier 24 bold") 
 start3.grid(column=2, row=1, sticky=N+S+E+W)
-start4 = Button(f, text='Task #3', width=6, command=lambda:Start4(label4, label1)) 
+start4 = Button(f, text='PTB', width=6, command=lambda:Start4(label4, label1), font="Courier 24 bold") 
 start4.grid(column=3, row=1, sticky=N+S+E+W)
-start5 = Button(f, text='Task #4', width=6, command=lambda:Start5(label5, label1)) 
+start5 = Button(f, text='SEP', width=6, command=lambda:Start5(label5, label1), font="Courier 24 bold") 
 start5.grid(column=4, row=1, sticky=N+S+E+W)
-exitbutton = Button(f, text='End', width=4, command=lambda:Exit(root))
+exitbutton = Button(f, text='End', width=4, command=lambda:Exit(root), font="Courier 24 bold")
 exitbutton.grid(column=4, row=2, sticky=E+N+S)
 
 label6.after(1000,lambda:TotalTime(label6))
