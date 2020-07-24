@@ -2,7 +2,7 @@
 # using Tkinter 
 #importing the required libraries 
 import math
-from tkinter import *
+from tkinter import Label, Button, Frame, messagebox, Grid, Tk, N, E, S, W, Entry, simpledialog
 from datetime import datetime 
 import simpleaudio as sa
 counter1 = 0
@@ -356,7 +356,7 @@ def Start5(label5, label1):
 	else:
 		PlayReset()
 
-def TotalTime(label6):
+def TotalTime(label6, label7):
 	def showtime():
 		global counter1, counter2, counter3, counter4, counter5
 		counter6 = counter1 + counter2 + counter3 + counter4 + counter5
@@ -365,6 +365,7 @@ def TotalTime(label6):
 		hours = math.floor(counter6 / 3600)
 		now = datetime.now()
 		tstamp = now.strftime("%Y-%m-%d %H:%M:%S")
+		dstamp = now.strftime("%Y-%m-%d")
 		string = "{hours:02}:{minutes:02}:{seconds:02}".format(hours=hours, minutes=minutes, seconds=seconds)
 		display6=string 
 		if counter6 % 300 == 0:
@@ -372,6 +373,8 @@ def TotalTime(label6):
 		
 		label6['text']=display6 
 		label6.after(1000,showtime)
+		if counter6 < 30:
+			label7['text']=dstamp
 	showtime()
 	
 # Stop function of the stopwatch 
@@ -414,6 +417,37 @@ def PlayKlaxon():
 def PlayReset():
 	PlaySound("HatchReset32.wav")
 
+def Increment(event, arg):
+	arg['root'].withdraw()
+	try:
+		user_input = simpledialog.askinteger(title="Manual adjust",prompt="Enter seconds")
+		arg['counter'](user_input)
+	except:
+		print('Messed up')
+	finally:
+		arg['root'].deiconify()
+
+def AddToCounter1(x):
+	global counter1 
+	counter1 += x 
+
+def AddToCounter2(x):
+	global counter2 
+	counter2 += x 
+
+def AddToCounter3(x):
+	global counter3 
+	counter3 += x 
+
+def AddToCounter4(x):
+	global counter4 
+	counter4 += x 
+
+def AddToCounter5(x):
+	global counter5 
+	counter5 += x 
+
+
 def PlayFailure():
 	PlaySound("HatchErupt32.wav")
 
@@ -426,9 +460,14 @@ def PlaySound(soundFile):
 
 def Exit(root):
 	global counter1, counter2, counter3, counter4, counter5 
-	
-	print("{counter1:n}-{counter2:n}-{counter3:n}-{counter4:n}-{counter5:n}".format(counter1=counter1,counter2=counter2,counter3=counter3,counter4=counter4,counter5=counter5))
-	root.destroy()
+	#canvas1 = Canvas(root, width=300, height=300)
+	#canvas1.grid(column=2, row=2)
+	MsgBox = messagebox.askquestion(title='Exit Application', message='Are you sure you want to exit?', icon = 'warning')
+	if MsgBox == 'yes':
+		print("{counter1:n}-{counter2:n}-{counter3:n}-{counter4:n}-{counter5:n}".format(counter1=counter1,counter2=counter2,counter3=counter3,counter4=counter4,counter5=counter5))
+		root.destroy()
+
+
 	
 root = Tk() 
 root.title("Focus Biller") 
@@ -453,24 +492,31 @@ Grid.rowconfigure(f, 1, weight=5)
 Grid.rowconfigure(f, 2, weight=1)
 
 #f.pack(anchor = 'center', pady=5)
-label1 = Label(f, text="00:00:00", fg="lime", bg="black", font="Verdana 24 bold") 
+label1 = Label(f, text="00:00:00", fg="lime", bg="black", font="Verdana 24 bold")
+label1.bind('<Double-1>', lambda event, arg={'root':root,'counter':AddToCounter1}: Increment(event,arg)) 
 label1.grid(column=0, row=0, sticky=N+S+E+W)
 #label1.pack(side="left")
 label2 = Label(f, text="00:00:00", fg="lime", bg="black", font="Verdana 24 bold") 
+label2.bind('<Double-1>', lambda event, arg={'root':root,'counter':AddToCounter2}: Increment(event,arg)) 
 label2.grid(column=1, row=0, sticky=N+S+E+W)
 #label2.pack(side="left")
 label3 = Label(f, text="00:00:00", fg="lime", bg="black", font="Verdana 24 bold") 
+label3.bind('<Double-1>', lambda event, arg={'root':root,'counter':AddToCounter3}: Increment(event,arg)) 
 label3.grid(column=2, row=0, sticky=N+S+E+W)
 #label3.pack(side="left")
 label4 = Label(f, text="00:00:00", fg="lime", bg="black", font="Verdana 24 bold") 
+label4.bind('<Double-1>', lambda event, arg={'root':root,'counter':AddToCounter4}: Increment(event,arg)) 
 label4.grid(column=3, row=0, sticky=N+S+E+W)
 #label4.pack(side="left")
 label5 = Label(f, text="00:00:00", fg="lime", bg="black", font="Verdana 24 bold") 
+label5.bind('<Double-1>', lambda event, arg={'root':root,'counter':AddToCounter5}: Increment(event,arg)) 
 label5.grid(column=4, row=0, sticky=N+S+E+W)
 #label5.pack(side="left") 
 
 label6 = Label(f, text="Total Time", fg="black", font="Courier 12 bold")
 label6.grid(column=0, row=2, sticky=E+N+S+W)
+label7 = Label(f, text='Date', fg="black", font="Courier 12 bold")
+label7.grid(column=1, row=2, sticky=E+N+S+W)
 
 
 start1 = Button(f, text='AFM', width=6, command=lambda:Start1(label1), font="Courier 24 bold") 
@@ -491,7 +537,7 @@ start5.grid(column=4, row=1, sticky=N+S+E+W)
 exitbutton = Button(f, text='End', width=4, command=lambda:Exit(root), font="Courier 24 bold")
 exitbutton.grid(column=4, row=2, sticky=E+N+S)
 
-label6.after(1000,lambda:TotalTime(label6))
+label6.after(1000,lambda:TotalTime(label6, label7))
 
 
 root.mainloop() 
