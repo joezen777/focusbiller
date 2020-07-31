@@ -2,7 +2,8 @@
 # using Tkinter 
 #importing the required libraries 
 import math
-from tkinter import Label, Button, Frame, messagebox, Grid, Tk, N, E, S, W, Entry, simpledialog
+from tkinter import Label, Button, Frame, messagebox, Grid, Tk, N, E, S, W, Entry, simpledialog, ttk, HORIZONTAL
+
 from datetime import datetime 
 import simpleaudio as sa
 counter1 = 0
@@ -28,13 +29,14 @@ revert_idle_threshold = 15
 
 def counter_label1(label1): 
 	def count1(): 
-		global running1
+		global running1, progressbar1
 		if running1: 
 			global counter1, warning_threshold, revert_idle_threshold
 			global running2 
 			global running3
 			global running4 
 			global running5 
+			progressbar1['value'] = counter1 % 100
 			label1.config(bg="white")
 			running2=running3=running4=running5=False
 			seconds = counter1 % 60
@@ -66,7 +68,7 @@ def counter_label1(label1):
 	
 def counter_label2(label2, label1): 
 	def count2(): 
-		global running2
+		global running2, progressbar2
 		if running2: 
 			global counter2, warning_threshold, revert_idle_threshold
 			global running1 
@@ -100,6 +102,9 @@ def counter_label2(label2, label1):
 			lastStart = lastStart2
 			counter = counter2 
 			label = label2
+			progressbar = progressbar2 
+			progressvalue = min(100, round((counter - lastStart) / (60 * warning_threshold)*100))
+			progressbar['value'] = progressvalue
 			if lastStart + 60*revert_idle_threshold <= counter:
 				running2=False
 				Start1(label1)
@@ -127,7 +132,7 @@ def counter_label2(label2, label1):
 
 def counter_label3(label3, label1): 
 	def count3(): 
-		global running3
+		global running3, progressbar3
 		if running3: 
 			global counter3, warning_threshold, revert_idle_threshold
 			global running1 
@@ -161,6 +166,9 @@ def counter_label3(label3, label1):
 			lastStart = lastStart3
 			counter = counter3 
 			label = label3
+			progressbar = progressbar3
+			progressvalue = min(100, round((counter - lastStart) / (60 * warning_threshold)*100))
+			progressbar['value'] = progressvalue
 			if lastStart + 60*revert_idle_threshold <= counter:
 				running3=False
 				Start1(label1)
@@ -189,7 +197,7 @@ def counter_label3(label3, label1):
 
 def counter_label4(label4, label1):
 	def count4(): 
-		global running4
+		global running4, progressbar4
 		if running4: 
 			global counter4, warning_threshold, revert_idle_threshold
 			global running1 
@@ -223,6 +231,9 @@ def counter_label4(label4, label1):
 			lastStart = lastStart4
 			counter = counter4
 			label = label4
+			progressbar = progressbar4
+			progressvalue = min(100, round((counter - lastStart) / (60 * warning_threshold)*100))
+			progressbar['value'] = progressvalue
 			if lastStart + 60*revert_idle_threshold <= counter:
 				running4=False
 				Start1(label1)
@@ -251,7 +262,7 @@ def counter_label4(label4, label1):
 
 def counter_label5(label5, label1): 
 	def count5(): 
-		global running5
+		global running5, progressbar5
 		if running5: 
 			global counter5, warning_threshold, revert_idle_threshold
 			global running1 
@@ -285,6 +296,9 @@ def counter_label5(label5, label1):
 			lastStart = lastStart5
 			counter = counter5
 			label = label5
+			progressbar = progressbar5
+			progressvalue = min(100, round((counter - lastStart) / (60 * warning_threshold)*100))
+			progressbar['value'] = progressvalue
 			if lastStart + 60*revert_idle_threshold <= counter:
 				running5=False
 				Start1(label1)
@@ -321,40 +335,40 @@ def Start1(label1):
 
 def Start2(label2, label1): 
 	global running2, lastStart2 
-	lastStart2=counter2
 	if not running2:
 		running2 = True
 		counter_label2(label2, label1)
-	else:
+	elif lastStart2 + 60*warning_threshold <= counter2:
 		PlayReset() 
+	lastStart2=counter2
 
 def Start3(label3, label1): 
 	global running3, lastStart3 
-	lastStart3=counter3
 	if not running3:
 		running3 = True
 		counter_label3(label3, label1)
-	else:
-		PlayReset()
+	elif lastStart3 + 60*warning_threshold <= counter3:
+		PlayReset() 
+	lastStart3=counter3
 
 def Start4(label4, label1): 
 	global running4, lastStart4
-	lastStart4=counter4
 	if not running4:
 		running4 = True
 		counter_label4(label4, label1) 
-	else:
-		PlayReset()
+	elif lastStart4 + 60*warning_threshold <= counter4:
+		PlayReset() 
+	lastStart4=counter4
 
 def Start5(label5, label1): 
 	global running5, lastStart5 
 	
-	lastStart5=counter5 
 	if not running5:
 		running5 = True
 		counter_label5(label5, label1) 
-	else:
-		PlayReset()
+	elif lastStart5 + 60*warning_threshold <= counter5:
+		PlayReset() 
+	lastStart5=counter5 
 
 def TotalTime(label6, label7):
 	def showtime():
@@ -488,8 +502,9 @@ Grid.columnconfigure(f, 3, weight=1)
 Grid.columnconfigure(f, 4, weight=1)
 
 Grid.rowconfigure(f, 0, weight=5)
-Grid.rowconfigure(f, 1, weight=5)
-Grid.rowconfigure(f, 2, weight=1)
+Grid.rowconfigure(f, 1, weight=0)
+Grid.rowconfigure(f, 2, weight=5)
+Grid.rowconfigure(f, 3, weight=1)
 
 #f.pack(anchor = 'center', pady=5)
 label1 = Label(f, text="00:00:00", fg="lime", bg="black", font="Verdana 24 bold")
@@ -513,29 +528,40 @@ label5.bind('<Double-1>', lambda event, arg={'root':root,'counter':AddToCounter5
 label5.grid(column=4, row=0, sticky=N+S+E+W)
 #label5.pack(side="left") 
 
+progressbar1 = ttk.Progressbar(f, orient = HORIZONTAL, length = 100, mode = 'indeterminate')
+progressbar1.grid(column=0, row=1, sticky=N+S+E+W)
+progressbar2 = ttk.Progressbar(f, orient = HORIZONTAL, length = 100, mode = 'determinate')
+progressbar2.grid(column=1, row=1, sticky=N+S+E+W)
+progressbar3 = ttk.Progressbar(f, orient = HORIZONTAL, length = 100, mode = 'determinate')
+progressbar3.grid(column=2, row=1, sticky=N+S+E+W)
+progressbar4 = ttk.Progressbar(f, orient = HORIZONTAL, length = 100, mode = 'determinate')
+progressbar4.grid(column=3, row=1, sticky=N+S+E+W)
+progressbar5 = ttk.Progressbar(f, orient = HORIZONTAL, length = 100, mode = 'determinate')
+progressbar5.grid(column=4, row=1, sticky=N+S+E+W)
+
 label6 = Label(f, text="Total Time", fg="black", font="Courier 12 bold")
-label6.grid(column=0, row=2, sticky=E+N+S+W)
+label6.grid(column=0, row=3, sticky=E+N+S+W)
 label7 = Label(f, text='Date', fg="black", font="Courier 12 bold")
-label7.grid(column=1, row=2, sticky=E+N+S+W)
+label7.grid(column=1, row=3, sticky=E+N+S+W)
 
 
 start1 = Button(f, text='AFM', width=6, command=lambda:Start1(label1), font="Courier 24 bold") 
-start1.grid(column=0, row=1, sticky=N+S+E+W)
+start1.grid(column=0, row=2, sticky=N+S+E+W)
 
 stop = Button(f, text='Break',width=6, command=Stop, font="Courier 24 bold") 
-stop.grid(column=2, row=2, sticky=E+N+S)
+stop.grid(column=2, row=3, sticky=E+N+S)
 reset = Button(f, text='Sleep',width=6, command=Reset, font="Courier 24 bold") 
-reset.grid(column=3, row=2, sticky=E+N+S)
+reset.grid(column=3, row=3, sticky=E+N+S)
 start2 = Button(f, text='MAJ', width=6, command=lambda:Start2(label2, label1), font="Courier 24 bold") 
-start2.grid(column=1, row=1, sticky=N+S+E+W)
+start2.grid(column=1, row=2, sticky=N+S+E+W)
 start3 = Button(f, text='MOJ', width=6, command=lambda:Start3(label3, label1), font="Courier 24 bold") 
-start3.grid(column=2, row=1, sticky=N+S+E+W)
+start3.grid(column=2, row=2, sticky=N+S+E+W)
 start4 = Button(f, text='PTB', width=6, command=lambda:Start4(label4, label1), font="Courier 24 bold") 
-start4.grid(column=3, row=1, sticky=N+S+E+W)
+start4.grid(column=3, row=2, sticky=N+S+E+W)
 start5 = Button(f, text='SEP', width=6, command=lambda:Start5(label5, label1), font="Courier 24 bold") 
-start5.grid(column=4, row=1, sticky=N+S+E+W)
+start5.grid(column=4, row=2, sticky=N+S+E+W)
 exitbutton = Button(f, text='End', width=4, command=lambda:Exit(root), font="Courier 24 bold")
-exitbutton.grid(column=4, row=2, sticky=E+N+S)
+exitbutton.grid(column=4, row=3, sticky=E+N+S)
 
 label6.after(1000,lambda:TotalTime(label6, label7))
 
